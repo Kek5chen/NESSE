@@ -2,13 +2,20 @@
 
 #include <cstdint>
 #include <array>
+#include <vector>
+#include "Utils/Logger.hpp"
 
 class IOBus;
 
 struct Memory {
 	explicit Memory(IOBus *ioBus);
-	// write();
-	// read();
+	template<typename T>
+	void write(uint16_t dst, T &data);
+	bool write(uint16_t dst, void *data, uint16_t size);
+	template<typename T>
+	T &read(uint16_t addr);
+	template<typename T, uint16_t N>
+	std::array<T, N> read(uint16_t src);
 private:
 	IOBus *mIOBus;
 
@@ -18,3 +25,5 @@ private:
 	std::array<uint8_t, 0xBFDF>		mCartridgeMap;		// 0x4020 - 0xFFFF
 
 };
+
+#include "Memory.tpp"
