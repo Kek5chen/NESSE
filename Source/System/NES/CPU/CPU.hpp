@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include "DecompilationDefines.hpp"
 
 struct IOBus;
 
@@ -16,6 +17,10 @@ struct CPU {
 	bool getInterruptDisableFlag() const;
 	bool getZeroFlag() const;
 	bool getCarryFlag() const;
+
+	static constexpr std::string_view getMnemonic(uint8_t opcode);
+	static constexpr uint8_t getOpcodeSize(uint8_t opcode);
+	static constexpr uint8_t getAddressingMode(uint8_t opcode);
 private:
 	uint8_t A;
 	uint8_t X, Y;
@@ -38,3 +43,25 @@ private:
 
 	IOBus *mIOBus;
 };
+
+constexpr std::string_view CPU::getMnemonic(uint8_t opcode) {
+	return std::string_view(g_mnemonics[opcode].Mnemonic.data());
+}
+
+constexpr uint8_t CPU::getOpcodeSize(uint8_t opcode) {
+	uint8_t addressingMode = g_mnemonics[opcode].AddressingMode;
+	if (addressingMode == ACCUMULATOR || addressingMode == IMPLIED)
+		return 1;
+	else if (addressingMode == IMMEDIATE || addressingMode == ZERO_PAGE || addressingMode == RELATIVE ||
+			 addressingMode == ZERO_PAGE_INDEXED_X || addressingMode == ZERO_PAGE_INDEXED_Y ||
+			 addressingMode == ZERO_PAGE_INDEXED_INDIRECT || addressingMode == ZERO_PAGE_INDIRECT_INDEXED_Y)
+		return 2;
+	else if (addressingMode == ABSOLUTE || addressingMode == ABSOLUTE_INDIRECT || addressingMode == ABSOLUTE_INDEXED_X ||
+			 addressingMode == ABSOLUTE_INDEXED_Y)
+		return 3;
+	return 0;
+}
+
+constexpr uint8_t CPU::getAddressingMode(uint8_t opcode) {
+	return g_mnemonics[opcode].AddressingMode;
+}
