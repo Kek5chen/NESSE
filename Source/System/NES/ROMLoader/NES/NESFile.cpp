@@ -22,12 +22,9 @@ NESFile::NESFile(const std::filesystem::path &romPath) {
 		return;
 	}
 
-	Header.PRGSize = Header.PRGSize * 1024 * 16;
-	Header.CHRSize = Header.CHRSize * 1024 * 8;
-
 	Data.PRGROM = Data.PRGROM;
-	Data.PRGROM.resize(Header.PRGSize);
-	Data.CHRROM.resize(Header.CHRSize);
+	Data.PRGROM.resize(Header.PRGSize * 1024 * 16);
+	Data.CHRROM.resize(Header.CHRSize * 1024 * 8);
 
 	curFilePos += sizeof(NESFileHeader);
 	std::copy(curFilePos,
