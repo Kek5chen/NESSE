@@ -28,12 +28,12 @@ NESFile::NESFile(const std::filesystem::path &romPath) {
 
 	curFilePos += sizeof(NESFileHeader);
 	std::copy(curFilePos,
-			  curFilePos + Header.PRGSize,
+			  curFilePos + Header.PRGSize * 1024 * 16,
 			  Data.PRGROM.data());
 
 	curFilePos += Header.PRGSize;
 	std::copy(curFilePos,
-			  curFilePos + Header.CHRSize,
+			  curFilePos + Header.CHRSize * 1024 * 8,
 			  Data.CHRROM.data());
 	DLOG("ROM file successfully read");
 }
