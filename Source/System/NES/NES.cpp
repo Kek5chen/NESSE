@@ -1,6 +1,7 @@
 #include <filesystem>
 #include "NES.hpp"
 #include "Utils/Logger.hpp"
+#include "System/NES/ROMLoader/NES/NESLoader.hpp"
 
 bool NES::loadROM(std::filesystem::path rom) {
 	ILOG("Loading " << rom << "...");
@@ -10,4 +11,8 @@ bool NES::loadROM(std::filesystem::path rom) {
 	}
 	DLOG("Rom found!");
 
+	NESLoader::loadROM(rom, this);
+
+
+	return true;
 }

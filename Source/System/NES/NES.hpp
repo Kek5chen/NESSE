@@ -4,6 +4,7 @@
 #include <filesystem>
 
 struct NES {
-	IOBus mBus;
+	IOBus Bus;
+
 	bool loadROM(std::filesystem::path rom);
 };
