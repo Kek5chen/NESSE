@@ -2,7 +2,7 @@
 
 class IOBus;
 
-class APU {
+struct APU {
 	explicit APU(IOBus *ioBus);
 private:
 	IOBus *mIOBus;

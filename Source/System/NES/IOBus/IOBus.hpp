@@ -6,6 +6,8 @@
 #include "../PPU/PPU.hpp"
 
 struct IOBus {
+	IOBus();
+
 	CPU mCPU;
 	Memory mMemory;
 	PPU mPPU;
