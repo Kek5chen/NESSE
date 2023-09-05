@@ -10,3 +10,8 @@ add_executable(nesse main.cpp
         Source/System/NES/APU/APU.cpp
         Source/System/NES/PPU/PPU.cpp
         Source/System/NES/NES.cpp)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_definitions(DEBUG)
+endif ()
+include_directories(Source)
