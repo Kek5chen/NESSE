@@ -7,6 +7,8 @@ struct IOBus;
 struct CPU {
 	explicit CPU(IOBus *ioBus);
 
+	void debugPrintState();
+
 	bool getNegativeFlag() const;
 	bool getOverflowFlag() const;
 	bool getBreakFlag() const;
