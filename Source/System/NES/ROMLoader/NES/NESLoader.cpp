@@ -15,5 +15,6 @@ bool NESLoader::loadROM(const std::filesystem::path &romPath, NES *nes) {
 		return false;
 	}
 	ILOG("Successfully loaded ROM.");
+	// TODO: Implement mappers
 	return true;
 }
