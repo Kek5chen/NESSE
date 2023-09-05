@@ -16,6 +16,8 @@ struct Memory {
 	T read(uint16_t addr);
 	template<typename T, uint16_t N>
 	std::array<T, N> read(uint16_t src);
+
+	void debugPrintDisassembly();
 private:
 	IOBus *mIOBus;
 

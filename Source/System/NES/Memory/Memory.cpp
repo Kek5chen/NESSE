@@ -1,5 +1,6 @@
 #include "Memory.hpp"
 #include "Utils/Logger.hpp"
+#include "../CPU/CPU.hpp"
 
 Memory::Memory(IOBus *ioBus) : mIOBus(ioBus) {
 
@@ -66,4 +67,46 @@ bool Memory::write(uint16_t dst, void *data, uint16_t size) {
 	}
 
 	return true;
+}
+
+std::string getAddressingModeString(uint8_t mode, const std::vector<uint8_t>& bytes) {
+	switch (mode) {
+		case ACCUMULATOR: return "A";
+		case IMPLIED: return "";
+		case IMMEDIATE: return "#" + std::to_string(bytes[0]);
+		case ABSOLUTE: return std::to_string(bytes[0] | (bytes[1] << 8));
+		case ZERO_PAGE: return std::to_string(bytes[0]);
+		case RELATIVE: return std::to_string(bytes[0]);
+		case ABSOLUTE_INDIRECT: return "(" + std::to_string(bytes[0] | (bytes[1] << 8)) + ")";
+		case ABSOLUTE_INDEXED_X: return std::to_string(bytes[0] | (bytes[1] << 8)) + ",X";
+		case ABSOLUTE_INDEXED_Y: return std::to_string(bytes[0] | (bytes[1] << 8)) + ",Y";
+		case ZERO_PAGE_INDEXED_X: return std::to_string(bytes[0]) + ",X";
+		case ZERO_PAGE_INDEXED_Y: return std::to_string(bytes[0]) + ",Y";
+		case ZERO_PAGE_INDEXED_INDIRECT: return "(" + std::to_string(bytes[0]) + ",X)";
+		case ZERO_PAGE_INDIRECT_INDEXED_Y: return "(" + std::to_string(bytes[0]) + "),Y";
+		default: return "UNKNOWN";
+	}
+}
+
+void Memory::debugPrintDisassembly() {
+#ifdef DEBUG
+	uint16_t cur = 0x8000;
+	while (cur < 0xFFFF) {
+		auto opcode = read<uint8_t>(cur);
+		uint8_t instructionSize = CPU::getOpcodeSize(opcode);
+		std::vector<uint8_t> otherBytes;
+		if (instructionSize == 0)
+			return;
+
+		if (instructionSize != 1)
+			for (uint8_t i = 1; i < instructionSize; ++i)
+				otherBytes.push_back(read<uint8_t>(cur + i));
+
+		std::string_view mnemonic = CPU::getMnemonic(opcode);
+		uint8_t mode = CPU::getAddressingMode(opcode);
+
+		std::cout << std::hex << cur << ": " << mnemonic << " " << getAddressingModeString(mode, otherBytes) << std::endl;
+		cur += instructionSize;
+	}
+#endif
 }
