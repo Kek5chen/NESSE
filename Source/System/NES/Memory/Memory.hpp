@@ -13,7 +13,7 @@ struct Memory {
 	void write(uint16_t dst, T &data);
 	bool write(uint16_t dst, void *data, uint16_t size);
 	template<typename T>
-	T &read(uint16_t addr);
+	T read(uint16_t addr);
 	template<typename T, uint16_t N>
 	std::array<T, N> read(uint16_t src);
 private:
@@ -23,7 +23,6 @@ private:
 	std::array<uint8_t, 0x8>		mPPURegisters;		// 0x2000 - 0x2007
 	std::array<uint8_t, 0x18>		mAPUIORegisters;	// 0x4000 - 0x4017
 	std::array<uint8_t, 0xBFDF>		mCartridgeMap;		// 0x4020 - 0xFFFF
-
 };
 
 #include "Memory.tpp"
