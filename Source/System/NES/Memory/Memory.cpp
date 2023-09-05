@@ -58,7 +58,7 @@ bool Memory::write(uint16_t dst, void *data, uint16_t size) {
 		uint16_t end = 0xFFFF;
 		uint16_t len = end - dst + 1;
 		if (len > size) {
-			std::copy(byteData, byteData + len, mCartridgeMap.begin() + (dst - 0x4020));
+			std::copy(byteData, byteData + size, mCartridgeMap.begin() + (dst - 0x4020));
 		} else {
 			WLOG("Failed to write to Cartridge Space at 0x" << std::hex << dst << " with size " << std::dec << size);
 			return false;
