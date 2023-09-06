@@ -21,7 +21,6 @@ struct CPU {
 	static constexpr std::string_view getMnemonic(uint8_t opcode);
 	static constexpr uint8_t getOpcodeSize(uint8_t opcode);
 	static constexpr uint8_t getAddressingMode(uint8_t opcode);
-private:
 	uint8_t A;
 	uint8_t X, Y;
 	uint8_t P;
@@ -41,6 +40,7 @@ private:
 		FlagStruct &operator=(uint8_t newValue);
 	} mFlags;
 
+private:
 	IOBus *mIOBus;
 };
 
