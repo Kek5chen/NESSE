@@ -3,7 +3,7 @@
 #include "Utils/Logger.hpp"
 #include "System/NES/ROMLoader/NES/NESLoader.hpp"
 
-bool NES::loadROM(std::filesystem::path rom) {
+bool NES::insertROM(std::filesystem::path rom) {
 	ILOG("Loading " << rom << "...");
 	if (!std::filesystem::exists(rom)) {
 		DLOG("Rom not found!");
@@ -13,6 +13,21 @@ bool NES::loadROM(std::filesystem::path rom) {
 
 	NESLoader::loadROM(rom, this);
 
-
 	return true;
+}
+
+void NES::run() {
+	DLOG("Starting NES...");
+	Bus.mCPU.reset();
+	for (int i = 0; i < 100; i++) {
+		Bus.mCPU.execute();
+	}
+	// TODO: nextFrame(); - run nextFrame once it's safe
+}
+
+void NES::nextFrame() {
+	mCyclesLeft = mCyclesPerFrame;
+	while (mCyclesLeft) {
+		mCyclesLeft -= Bus.mCPU.execute();
+	}
 }
