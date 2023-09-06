@@ -4,6 +4,7 @@
 CPU::CPU(IOBus *ioBus) {
 	mIOBus = ioBus;
 	mFlags = 0b00000000;
+	SP = 0xFF;
 }
 
 bool CPU::getNegativeFlag() const {
