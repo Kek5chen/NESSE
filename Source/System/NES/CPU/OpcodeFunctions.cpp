@@ -95,7 +95,7 @@ void JSR_ABSOLUTE(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
 
 
 void INS_NULLFUNC(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
-	DLOG("Game called NULLFUNC with " << std::hex << byte1 << " and " << byte2);
+	DLOG("Game called NULLFUNC with 0x" << std::hex << +byte1 << " and 0x" << +byte2);
 }
 
 const auto g_opcodes = std::to_array<Opcode>({
