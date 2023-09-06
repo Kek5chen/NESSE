@@ -1,7 +1,7 @@
 
 template<typename T>
-void Memory::write(uint16_t dst, T &data) {
-	write(dst, &data, sizeof(T));
+void Memory::write(uint16_t dst, const T &data) {
+	write(dst, (void *) &data, sizeof(T));
 }
 
 template<typename T, uint16_t N>

@@ -10,7 +10,7 @@ class IOBus;
 struct Memory {
 	explicit Memory(IOBus *ioBus);
 	template<typename T>
-	void write(uint16_t dst, T &data);
+	void write(uint16_t dst, const T &data);
 	bool write(uint16_t dst, void *data, uint16_t size);
 	template<typename T>
 	T read(uint16_t addr);
