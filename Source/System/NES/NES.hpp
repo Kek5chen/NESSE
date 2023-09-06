@@ -6,7 +6,7 @@
 #define CYCLES_PER_FRAME_NTSC (1789773 / 60)
 
 struct NES {
-	bool insertROM(std::filesystem::path rom);
+	bool insertROM(const std::filesystem::path& rom);
 	void run();
 	void nextFrame();
 

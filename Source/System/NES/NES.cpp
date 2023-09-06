@@ -3,7 +3,7 @@
 #include "Utils/Logger.hpp"
 #include "System/NES/ROMLoader/NES/NESLoader.hpp"
 
-bool NES::insertROM(std::filesystem::path rom) {
+bool NES::insertROM(const std::filesystem::path& rom) {
 	ILOG("Loading " << rom << "...");
 	if (!std::filesystem::exists(rom)) {
 		DLOG("Rom not found!");
