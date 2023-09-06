@@ -2,11 +2,10 @@
 
 #include "../IOBus/IOBus.hpp"
 #include <array>
-
-typedef void (*t_opcode_function)(IOBus *ioBus, uint8_t byte1, uint8_t byte2);
+#include <functional>
 
 struct Opcode {
-	t_opcode_function function;
+	std::function<void(IOBus *ioBus, uint8_t byte1, uint8_t byte2)> function;
 	uint8_t cycles;
 };
 
