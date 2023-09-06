@@ -98,7 +98,7 @@ void INS_NULLFUNC(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
 	DLOG("Game called NULLFUNC with 0x" << std::hex << +byte1 << " and 0x" << +byte2);
 }
 
-const auto g_opcodes = std::to_array<Opcode>({
+const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	////////////// 00 /////////////
 	{INS_NULLFUNC, 0},		// 0x00
 	{INS_NULLFUNC, 0},		// 0x01
