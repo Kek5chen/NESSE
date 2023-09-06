@@ -151,7 +151,7 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0x2E
 	{INS_NULLFUNC, 0},		// 0x2F
 	////////////// 30 /////////////
-	{INS_NULLFUNC, 1},		// 0x30
+	{BMI_RELATIVE, 1},		// 0x30
 	{INS_NULLFUNC, 0},		// 0x31
 	{INS_NULLFUNC, 0},		// 0x32
 	{INS_NULLFUNC, 0},		// 0x33
