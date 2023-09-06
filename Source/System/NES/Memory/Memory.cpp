@@ -90,7 +90,7 @@ std::string getAddressingModeString(uint8_t mode, const std::vector<uint8_t>& by
 
 void Memory::debugPrintDisassembly() {
 #ifdef DEBUG
-	uint16_t cur = 0x8000;
+	uint32_t cur = 0x8000;
 	while (cur < 0xFFFF) {
 		auto opcode = read<uint8_t>(cur);
 		uint8_t instructionSize = CPU::getOpcodeSize(opcode);
