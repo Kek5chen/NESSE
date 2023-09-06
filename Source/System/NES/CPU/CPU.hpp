@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 #include "DecompilationDefines.hpp"
 
 struct IOBus;
@@ -21,6 +22,12 @@ struct CPU {
 	static constexpr std::string_view getMnemonic(uint8_t opcode);
 	static constexpr uint8_t getOpcodeSize(uint8_t opcode);
 	static constexpr uint8_t getAddressingMode(uint8_t opcode);
+
+	std::vector<uint8_t> getInstruction();
+	std::vector<uint8_t> getInstruction(uint16_t addr);
+	uint8_t execute();
+	void reset();
+
 	uint8_t A;
 	uint8_t X, Y;
 	uint8_t P;

@@ -1,5 +1,7 @@
 #include <iostream>
 #include "CPU.hpp"
+#include "../IOBus/IOBus.hpp"
+#include "OpcodeFunctions.hpp"
 
 CPU::CPU(IOBus *ioBus) {
 	mIOBus = ioBus;
@@ -57,6 +59,48 @@ void CPU::debugPrintState() {
 
 	std::cout << "-------------------" << std::endl;
 #endif
+}
+
+std::vector<uint8_t> CPU::getInstruction(uint16_t addr) {
+	std::vector<uint8_t> instruction;
+	auto opcode = mIOBus->mMemory.read<uint8_t>(addr);
+	instruction.push_back(opcode);
+	uint8_t instructionSize = getOpcodeSize(opcode);
+	if (instructionSize == 0)
+		return instruction;
+
+	if (instructionSize != 1)
+		for (uint8_t i = 1; i < instructionSize; ++i)
+			instruction.push_back(mIOBus->mMemory.read<uint8_t>(addr + i));
+
+	return instruction;
+}
+
+std::vector<uint8_t> CPU::getInstruction() {
+	return getInstruction(PC);
+}
+
+uint8_t CPU::execute() {
+	auto curInstruction = getInstruction();
+
+	auto opcode = curInstruction[0];
+	auto byte1 = curInstruction.size() > 1 ? curInstruction[1] : 0;
+	auto byte2 = curInstruction.size() > 2 ? curInstruction[2] : 0;
+
+	PC += curInstruction.size();
+
+	g_opcodes[opcode].function(mIOBus, byte1, byte2);
+	return g_opcodes[opcode].cycles;
+}
+
+void CPU::reset() {
+	A = 0;
+	X = 0;
+	Y = 0;
+	P = 0;
+	SP = 0xFF;
+	PC = mIOBus->mMemory.read<uint16_t>(0xFFFC);
+	mFlags = 0b00000000;
 }
 
 CPU::FlagStruct &CPU::FlagStruct::operator=(uint8_t newValue) {
