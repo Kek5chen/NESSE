@@ -57,16 +57,14 @@ constexpr std::string_view CPU::getMnemonic(uint8_t opcode) {
 
 constexpr uint8_t CPU::getOpcodeSize(uint8_t opcode) {
 	uint8_t addressingMode = g_mnemonics[opcode].AddressingMode;
-	if (addressingMode == ACCUMULATOR || addressingMode == IMPLIED)
-		return 1;
-	else if (addressingMode == IMMEDIATE || addressingMode == ZERO_PAGE || addressingMode == RELATIVE ||
+	if (addressingMode == IMMEDIATE || addressingMode == ZERO_PAGE || addressingMode == RELATIVE ||
 			 addressingMode == ZERO_PAGE_INDEXED_X || addressingMode == ZERO_PAGE_INDEXED_Y ||
 			 addressingMode == ZERO_PAGE_INDEXED_INDIRECT || addressingMode == ZERO_PAGE_INDIRECT_INDEXED_Y)
 		return 2;
 	else if (addressingMode == ABSOLUTE || addressingMode == ABSOLUTE_INDIRECT || addressingMode == ABSOLUTE_INDEXED_X ||
 			 addressingMode == ABSOLUTE_INDEXED_Y)
 		return 3;
-	return 0;
+	return 1;
 }
 
 constexpr uint8_t CPU::getAddressingMode(uint8_t opcode) {
