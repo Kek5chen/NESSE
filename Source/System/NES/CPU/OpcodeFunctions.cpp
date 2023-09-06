@@ -98,22 +98,279 @@ void INS_NULLFUNC(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
 	DLOG("Game called NULLFUNC with " << std::hex << byte1 << " and " << byte2);
 }
 
-const Opcode g_opcodes[256] = {
+const auto g_opcodes = std::to_array<Opcode>({
+	////////////// 00 /////////////
+	{INS_NULLFUNC, 0},		// 0x00
+	{INS_NULLFUNC, 0},		// 0x01
+	{INS_NULLFUNC, 0},		// 0x02
+	{INS_NULLFUNC, 0},		// 0x03
+	{INS_NULLFUNC, 0},		// 0x04
+	{INS_NULLFUNC, 0},		// 0x05
+	{INS_NULLFUNC, 0},		// 0x06
+	{INS_NULLFUNC, 0},		// 0x07
+	{INS_NULLFUNC, 0},		// 0x08
+	{INS_NULLFUNC, 0},		// 0x09
+	{INS_NULLFUNC, 0},		// 0x0A
+	{INS_NULLFUNC, 0},		// 0x0B
+	{INS_NULLFUNC, 0},		// 0x0C
+	{INS_NULLFUNC, 0},		// 0x0D
+	{INS_NULLFUNC, 0},		// 0x0E
+	{INS_NULLFUNC, 0},		// 0x0F
+	////////////// 10 /////////////
 	{BPL_RELATIVE, 1},		// 0x10
+	{INS_NULLFUNC, 0},		// 0x11
+	{INS_NULLFUNC, 0},		// 0x12
+	{INS_NULLFUNC, 0},		// 0x13
+	{INS_NULLFUNC, 0},		// 0x14
+	{INS_NULLFUNC, 0},		// 0x15
+	{INS_NULLFUNC, 0},		// 0x16
+	{INS_NULLFUNC, 0},		// 0x17
+	{INS_NULLFUNC, 0},		// 0x18
+	{INS_NULLFUNC, 0},		// 0x19
+	{INS_NULLFUNC, 0},		// 0x1A
+	{INS_NULLFUNC, 0},		// 0x1B
+	{INS_NULLFUNC, 0},		// 0x1C
+	{INS_NULLFUNC, 0},		// 0x1D
+	{INS_NULLFUNC, 0},		// 0x1E
+	{INS_NULLFUNC, 0},		// 0x1F
+	////////////// 20 /////////////
 	{JSR_ABSOLUTE, 1},		// 0x20
-	{BMI_RELATIVE, 1},		// 0x30
+	{INS_NULLFUNC, 0},		// 0x21
+	{INS_NULLFUNC, 0},		// 0x22
+	{INS_NULLFUNC, 0},		// 0x23
+	{INS_NULLFUNC, 0},		// 0x24
+	{INS_NULLFUNC, 0},		// 0x25
+	{INS_NULLFUNC, 0},		// 0x26
+	{INS_NULLFUNC, 0},		// 0x27
+	{INS_NULLFUNC, 0},		// 0x28
+	{INS_NULLFUNC, 0},		// 0x29
+	{INS_NULLFUNC, 0},		// 0x2A
+	{INS_NULLFUNC, 0},		// 0x2B
+	{INS_NULLFUNC, 0},		// 0x2C
+	{INS_NULLFUNC, 0},		// 0x2D
+	{INS_NULLFUNC, 0},		// 0x2E
+	{INS_NULLFUNC, 0},		// 0x2F
+	////////////// 30 /////////////
+	{INS_NULLFUNC, 1},		// 0x30
+	{INS_NULLFUNC, 0},		// 0x31
+	{INS_NULLFUNC, 0},		// 0x32
+	{INS_NULLFUNC, 0},		// 0x33
+	{INS_NULLFUNC, 0},		// 0x34
+	{INS_NULLFUNC, 0},		// 0x35
+	{INS_NULLFUNC, 0},		// 0x36
+	{INS_NULLFUNC, 0},		// 0x37
+	{INS_NULLFUNC, 0},		// 0x38
+	{INS_NULLFUNC, 0},		// 0x39
+	{INS_NULLFUNC, 0},		// 0x3A
+	{INS_NULLFUNC, 0},		// 0x3B
+	{INS_NULLFUNC, 0},		// 0x3C
+	{INS_NULLFUNC, 0},		// 0x3D
+	{INS_NULLFUNC, 0},		// 0x3E
+	{INS_NULLFUNC, 0},		// 0x3F
+	////////////// 40 /////////////
+	{INS_NULLFUNC, 1},		// 0x40
+	{INS_NULLFUNC, 0},		// 0x41
+	{INS_NULLFUNC, 0},		// 0x42
+	{INS_NULLFUNC, 0},		// 0x43
+	{INS_NULLFUNC, 0},		// 0x44
+	{INS_NULLFUNC, 0},		// 0x45
+	{INS_NULLFUNC, 0},		// 0x46
+	{INS_NULLFUNC, 0},		// 0x47
+	{INS_NULLFUNC, 0},		// 0x48
+	{INS_NULLFUNC, 0},		// 0x49
+	{INS_NULLFUNC, 0},		// 0x4A
+	{INS_NULLFUNC, 0},		// 0x4B
+	{INS_NULLFUNC, 0},		// 0x4C
+	{INS_NULLFUNC, 0},		// 0x4D
+	{INS_NULLFUNC, 0},		// 0x4E
+	{INS_NULLFUNC, 0},		// 0x4F
+	////////////// 50 /////////////
+	{INS_NULLFUNC, 1},		// 0x50
+	{INS_NULLFUNC, 0},		// 0x51
+	{INS_NULLFUNC, 0},		// 0x52
+	{INS_NULLFUNC, 0},		// 0x53
+	{INS_NULLFUNC, 0},		// 0x54
+	{INS_NULLFUNC, 0},		// 0x55
+	{INS_NULLFUNC, 0},		// 0x56
+	{INS_NULLFUNC, 0},		// 0x57
+	{INS_NULLFUNC, 0},		// 0x58
+	{INS_NULLFUNC, 0},		// 0x59
+	{INS_NULLFUNC, 0},		// 0x5A
+	{INS_NULLFUNC, 0},		// 0x5B
+	{INS_NULLFUNC, 0},		// 0x5C
+	{INS_NULLFUNC, 0},		// 0x5D
+	{INS_NULLFUNC, 0},		// 0x5E
+	{INS_NULLFUNC, 0},		// 0x5F
+	////////////// 60 /////////////
+	{INS_NULLFUNC, 1},		// 0x60
+	{INS_NULLFUNC, 0},		// 0x61
+	{INS_NULLFUNC, 0},		// 0x62
+	{INS_NULLFUNC, 0},		// 0x63
+	{INS_NULLFUNC, 0},		// 0x64
+	{INS_NULLFUNC, 0},		// 0x65
+	{INS_NULLFUNC, 0},		// 0x66
+	{INS_NULLFUNC, 0},		// 0x67
+	{INS_NULLFUNC, 0},		// 0x68
+	{INS_NULLFUNC, 0},		// 0x69
+	{INS_NULLFUNC, 0},		// 0x6A
+	{INS_NULLFUNC, 0},		// 0x6B
+	{INS_NULLFUNC, 0},		// 0x6C
+	{INS_NULLFUNC, 0},		// 0x6D
+	{INS_NULLFUNC, 0},		// 0x6E
+	{INS_NULLFUNC, 0},		// 0x6F
+	////////////// 70 /////////////
+	{INS_NULLFUNC, 1},		// 0x70
+	{INS_NULLFUNC, 0},		// 0x71
+	{INS_NULLFUNC, 0},		// 0x72
+	{INS_NULLFUNC, 0},		// 0x73
+	{INS_NULLFUNC, 0},		// 0x74
+	{INS_NULLFUNC, 0},		// 0x75
+	{INS_NULLFUNC, 0},		// 0x76
+	{INS_NULLFUNC, 0},		// 0x77
 	{SEI_IMPLIED, 1},		// 0x78
+	{INS_NULLFUNC, 0},		// 0x79
+	{INS_NULLFUNC, 0},		// 0x7A
+	{INS_NULLFUNC, 0},		// 0x7B
+	{INS_NULLFUNC, 0},		// 0x7C
+	{INS_NULLFUNC, 0},		// 0x7D
+	{INS_NULLFUNC, 0},		// 0x7E
+	{INS_NULLFUNC, 0},		// 0x7F
+	////////////// 80 /////////////
+	{INS_NULLFUNC, 1},		// 0x80
+	{INS_NULLFUNC, 0},		// 0x81
+	{INS_NULLFUNC, 0},		// 0x82
+	{INS_NULLFUNC, 0},		// 0x83
+	{INS_NULLFUNC, 0},		// 0x84
+	{INS_NULLFUNC, 0},		// 0x85
+	{INS_NULLFUNC, 0},		// 0x86
+	{INS_NULLFUNC, 0},		// 0x87
+	{INS_NULLFUNC, 1},		// 0x88
+	{INS_NULLFUNC, 0},		// 0x89
 	{TXA_IMPLIED, 1},		// 0x8A
+	{INS_NULLFUNC, 0},		// 0x8B
+	{INS_NULLFUNC, 0},		// 0x8C
 	{STA_ABSOLUTE, 1},		// 0x8D
+	{INS_NULLFUNC, 0},		// 0x8E
+	{INS_NULLFUNC, 0},		// 0x8F
+	////////////// 90 /////////////
+	{INS_NULLFUNC, 1},		// 0x90
+	{INS_NULLFUNC, 0},		// 0x91
+	{INS_NULLFUNC, 0},		// 0x92
+	{INS_NULLFUNC, 0},		// 0x93
+	{INS_NULLFUNC, 0},		// 0x94
+	{INS_NULLFUNC, 0},		// 0x95
+	{INS_NULLFUNC, 0},		// 0x96
+	{INS_NULLFUNC, 0},		// 0x97
+	{INS_NULLFUNC, 1},		// 0x98
+	{INS_NULLFUNC, 0},		// 0x99
 	{TXS_IMPLIED, 1},		// 0x9A
+	{INS_NULLFUNC, 0},		// 0x9B
+	{INS_NULLFUNC, 0},		// 0x9C
 	{STA_ABSOLUTE_IX, 1},	// 0x9D
+	{INS_NULLFUNC, 0},		// 0x9E
+	{INS_NULLFUNC, 0},		// 0x9F
+	////////////// A0 /////////////
+	{INS_NULLFUNC, 0},		// 0xA0
+	{INS_NULLFUNC, 0},		// 0xA1
 	{LDX_IMMEDIATE, 1},		// 0xA2
+	{INS_NULLFUNC, 0},		// 0xA3
+	{INS_NULLFUNC, 0},		// 0xA4
+	{INS_NULLFUNC, 0},		// 0xA5
+	{INS_NULLFUNC, 0},		// 0xA6
+	{INS_NULLFUNC, 0},		// 0xA7
+	{INS_NULLFUNC, 0},		// 0xA8
 	{LDA_IMMEDIATE, 1},		// 0xA9
+	{INS_NULLFUNC, 0},		// 0xAA
+	{INS_NULLFUNC, 0},		// 0xAB
+	{INS_NULLFUNC, 0},		// 0xAC
 	{LDA_ABSOLUTE, 1},		// 0xAD
+	{INS_NULLFUNC, 0},		// 0xAE
+	{INS_NULLFUNC, 0},		// 0xAF
+	////////////// B0 /////////////
+	{INS_NULLFUNC, 0},		// 0xB0
+	{INS_NULLFUNC, 0},		// 0xB1
+	{INS_NULLFUNC, 0},		// 0xB2
+	{INS_NULLFUNC, 0},		// 0xB3
+	{INS_NULLFUNC, 0},		// 0xB4
+	{INS_NULLFUNC, 0},		// 0xB5
+	{INS_NULLFUNC, 0},		// 0xB6
+	{INS_NULLFUNC, 0},		// 0xB7
+	{INS_NULLFUNC, 0},		// 0xB8
+	{INS_NULLFUNC, 0},		// 0xB9
+	{INS_NULLFUNC, 0},		// 0xBA
+	{INS_NULLFUNC, 0},		// 0xBB
+	{INS_NULLFUNC, 0},		// 0xBC
 	{LDA_ABSOLUTE_IX, 1},	// 0xBD
+	{INS_NULLFUNC, 0},		// 0xBE
+	{INS_NULLFUNC, 0},		// 0xBF
+	////////////// C0 /////////////
+	{INS_NULLFUNC, 0},		// 0xC0
+	{INS_NULLFUNC, 0},		// 0xC1
+	{INS_NULLFUNC, 0},		// 0xC2
+	{INS_NULLFUNC, 0},		// 0xC3
+	{INS_NULLFUNC, 0},		// 0xC4
+	{INS_NULLFUNC, 0},		// 0xC5
+	{INS_NULLFUNC, 0},		// 0xC6
+	{INS_NULLFUNC, 0},		// 0xC7
+	{INS_NULLFUNC, 0},		// 0xC8
+	{INS_NULLFUNC, 0},		// 0xC9
 	{DEX_IMPLIED, 1},		// 0xCA
+	{INS_NULLFUNC, 0},		// 0xCB
+	{INS_NULLFUNC, 0},		// 0xCC
+	{INS_NULLFUNC, 0},		// 0xCD
+	{INS_NULLFUNC, 0},		// 0xCE
+	{INS_NULLFUNC, 0},		// 0xCF
+	////////////// D0 /////////////
 	{BNE_RELATIVE, 1},		// 0xD0
+	{INS_NULLFUNC, 0},		// 0xD1
+	{INS_NULLFUNC, 0},		// 0xD2
+	{INS_NULLFUNC, 0},		// 0xD3
+	{INS_NULLFUNC, 0},		// 0xD4
+	{INS_NULLFUNC, 0},		// 0xD5
+	{INS_NULLFUNC, 0},		// 0xD6
+	{INS_NULLFUNC, 0},		// 0xD7
 	{CLD_IMPLIED, 1},		// 0xD8
+	{INS_NULLFUNC, 0},		// 0xD9
+	{INS_NULLFUNC, 0},		// 0xDA
+	{INS_NULLFUNC, 0},		// 0xDB
+	{INS_NULLFUNC, 0},		// 0xDC
 	{CMP_ABSOLUTE_IX, 1},	// 0xDD
+	{INS_NULLFUNC, 0},		// 0xDE
+	{INS_NULLFUNC, 0},		// 0xDF
+	////////////// E0 /////////////
+	{INS_NULLFUNC, 0},		// 0xE0
+	{INS_NULLFUNC, 0},		// 0xE1
+	{INS_NULLFUNC, 0},		// 0xE2
+	{INS_NULLFUNC, 0},		// 0xE3
+	{INS_NULLFUNC, 0},		// 0xE4
+	{INS_NULLFUNC, 0},		// 0xE5
+	{INS_NULLFUNC, 0},		// 0xE6
+	{INS_NULLFUNC, 0},		// 0xE7
 	{INX_IMPLIED, 1},		// 0xE8
-};
+	{INS_NULLFUNC, 0},		// 0xE9
+	{INS_NULLFUNC, 0},		// 0xEA
+	{INS_NULLFUNC, 0},		// 0xEB
+	{INS_NULLFUNC, 0},		// 0xEC
+	{INS_NULLFUNC, 0},		// 0xED
+	{INS_NULLFUNC, 0},		// 0xEE
+	{INS_NULLFUNC, 0},		// 0xEF
+	////////////// F0 /////////////
+	{INS_NULLFUNC, 0},		// 0xF0
+	{INS_NULLFUNC, 0},		// 0xF1
+	{INS_NULLFUNC, 0},		// 0xF2
+	{INS_NULLFUNC, 0},		// 0xF3
+	{INS_NULLFUNC, 0},		// 0xF4
+	{INS_NULLFUNC, 0},		// 0xF5
+	{INS_NULLFUNC, 0},		// 0xF6
+	{INS_NULLFUNC, 0},		// 0xF7
+	{INS_NULLFUNC, 0},		// 0xF8
+	{INS_NULLFUNC, 0},		// 0xF9
+	{INS_NULLFUNC, 0},		// 0xFA
+	{INS_NULLFUNC, 0},		// 0xFB
+	{INS_NULLFUNC, 0},		// 0xFC
+	{INS_NULLFUNC, 0},		// 0xFD
+	{INS_NULLFUNC, 0},		// 0xFE
+	{INS_NULLFUNC, 0},		// 0xFF
+});
+
+static_assert(g_opcodes.size() == 256);
