@@ -11,8 +11,8 @@ add_executable(nesse main.cpp
         Source/System/NES/PPU/PPU.cpp
         Source/System/NES/NES.cpp
         Source/System/NES/ROMLoader/NES/NESLoader.cpp
-        Source/System/NES/ROMLoader/NES/NESFile.cpp)
         Source/System/NES/ROMLoader/NES/NESFile.cpp
+        Source/System/NES/CPU/OpcodeFunctions.cpp)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(DEBUG)
