@@ -6,7 +6,7 @@ void Memory::write(uint16_t dst, const T &data) {
 
 template<typename T, uint16_t N>
 std::array<T, N> Memory::read(uint16_t src) {
-	std::array<T, N * sizeof(T)> result = {};
+	std::array<T, N> result = {};
 	uint16_t size = N;
 
 	auto dest = reinterpret_cast<uint8_t*>(result.data());
