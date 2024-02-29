@@ -12,7 +12,7 @@ bool Memory::write(uint16_t dst, void *data, uint16_t size) {
 		return false;
 	}
 
-	uint8_t* byteData = static_cast<uint8_t*>(data);
+	auto *byteData = static_cast<uint8_t*>(data);
 
 	// RAM [0x0000 - 0x1FFF]
 	if (dst < 0x2000) {

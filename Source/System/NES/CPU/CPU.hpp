@@ -6,6 +6,7 @@
 
 struct IOBus;
 
+// https://www.nesdev.org/wiki/CPU
 struct CPU {
 	explicit CPU(IOBus *ioBus);
 

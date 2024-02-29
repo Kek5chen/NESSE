@@ -5,6 +5,7 @@
 
 class IOBus;
 
+// https://www.nesdev.org/wiki/PPU
 struct PPU {
 	explicit PPU(IOBus *ioBus);
 
