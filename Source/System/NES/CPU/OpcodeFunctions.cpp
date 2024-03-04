@@ -92,6 +92,10 @@ void JSR_ABSOLUTE(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
 	ioBus->mCPU.PC = addr;
 }
 
+void NOP_IMMEDIATE(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
+	// Do nothing
+}
+
 
 
 void INS_NULLFUNC(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
@@ -104,7 +108,7 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0x01
 	{INS_NULLFUNC, 0},		// 0x02
 	{INS_NULLFUNC, 0},		// 0x03
-	{INS_NULLFUNC, 0},		// 0x04
+	{NOP_IMMEDIATE, 0},		// 0x04
 	{INS_NULLFUNC, 0},		// 0x05
 	{INS_NULLFUNC, 0},		// 0x06
 	{INS_NULLFUNC, 0},		// 0x07
@@ -112,7 +116,7 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0x09
 	{INS_NULLFUNC, 0},		// 0x0A
 	{INS_NULLFUNC, 0},		// 0x0B
-	{INS_NULLFUNC, 0},		// 0x0C
+	{NOP_IMMEDIATE, 0},		// 0x0C
 	{INS_NULLFUNC, 0},		// 0x0D
 	{INS_NULLFUNC, 0},		// 0x0E
 	{INS_NULLFUNC, 0},		// 0x0F
@@ -121,15 +125,15 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0x11
 	{INS_NULLFUNC, 0},		// 0x12
 	{INS_NULLFUNC, 0},		// 0x13
-	{INS_NULLFUNC, 0},		// 0x14
+	{NOP_IMMEDIATE, 0},		// 0x14
 	{INS_NULLFUNC, 0},		// 0x15
 	{INS_NULLFUNC, 0},		// 0x16
 	{INS_NULLFUNC, 0},		// 0x17
 	{INS_NULLFUNC, 0},		// 0x18
 	{INS_NULLFUNC, 0},		// 0x19
-	{INS_NULLFUNC, 0},		// 0x1A
+	{NOP_IMMEDIATE, 0},		// 0x1A
 	{INS_NULLFUNC, 0},		// 0x1B
-	{INS_NULLFUNC, 0},		// 0x1C
+	{NOP_IMMEDIATE, 0},		// 0x1C
 	{INS_NULLFUNC, 0},		// 0x1D
 	{INS_NULLFUNC, 0},		// 0x1E
 	{INS_NULLFUNC, 0},		// 0x1F
@@ -155,15 +159,15 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0x31
 	{INS_NULLFUNC, 0},		// 0x32
 	{INS_NULLFUNC, 0},		// 0x33
-	{INS_NULLFUNC, 0},		// 0x34
+	{NOP_IMMEDIATE, 0},		// 0x34
 	{INS_NULLFUNC, 0},		// 0x35
 	{INS_NULLFUNC, 0},		// 0x36
 	{INS_NULLFUNC, 0},		// 0x37
 	{INS_NULLFUNC, 0},		// 0x38
 	{INS_NULLFUNC, 0},		// 0x39
-	{INS_NULLFUNC, 0},		// 0x3A
+	{NOP_IMMEDIATE, 0},		// 0x3A
 	{INS_NULLFUNC, 0},		// 0x3B
-	{INS_NULLFUNC, 0},		// 0x3C
+	{NOP_IMMEDIATE, 0},		// 0x3C
 	{INS_NULLFUNC, 0},		// 0x3D
 	{INS_NULLFUNC, 0},		// 0x3E
 	{INS_NULLFUNC, 0},		// 0x3F
@@ -172,7 +176,7 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0x41
 	{INS_NULLFUNC, 0},		// 0x42
 	{INS_NULLFUNC, 0},		// 0x43
-	{INS_NULLFUNC, 0},		// 0x44
+	{NOP_IMMEDIATE, 0},		// 0x44
 	{INS_NULLFUNC, 0},		// 0x45
 	{INS_NULLFUNC, 0},		// 0x46
 	{INS_NULLFUNC, 0},		// 0x47
@@ -189,15 +193,15 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0x51
 	{INS_NULLFUNC, 0},		// 0x52
 	{INS_NULLFUNC, 0},		// 0x53
-	{INS_NULLFUNC, 0},		// 0x54
+	{NOP_IMMEDIATE, 0},		// 0x54
 	{INS_NULLFUNC, 0},		// 0x55
 	{INS_NULLFUNC, 0},		// 0x56
 	{INS_NULLFUNC, 0},		// 0x57
 	{INS_NULLFUNC, 0},		// 0x58
 	{INS_NULLFUNC, 0},		// 0x59
-	{INS_NULLFUNC, 0},		// 0x5A
+	{NOP_IMMEDIATE, 0},		// 0x5A
 	{INS_NULLFUNC, 0},		// 0x5B
-	{INS_NULLFUNC, 0},		// 0x5C
+	{NOP_IMMEDIATE, 0},		// 0x5C
 	{INS_NULLFUNC, 0},		// 0x5D
 	{INS_NULLFUNC, 0},		// 0x5E
 	{INS_NULLFUNC, 0},		// 0x5F
@@ -206,7 +210,7 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0x61
 	{INS_NULLFUNC, 0},		// 0x62
 	{INS_NULLFUNC, 0},		// 0x63
-	{INS_NULLFUNC, 0},		// 0x64
+	{NOP_IMMEDIATE, 0},		// 0x64
 	{INS_NULLFUNC, 0},		// 0x65
 	{INS_NULLFUNC, 0},		// 0x66
 	{INS_NULLFUNC, 0},		// 0x67
@@ -223,29 +227,29 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0x71
 	{INS_NULLFUNC, 0},		// 0x72
 	{INS_NULLFUNC, 0},		// 0x73
-	{INS_NULLFUNC, 0},		// 0x74
+	{NOP_IMMEDIATE, 0},		// 0x74
 	{INS_NULLFUNC, 0},		// 0x75
 	{INS_NULLFUNC, 0},		// 0x76
 	{INS_NULLFUNC, 0},		// 0x77
 	{SEI_IMPLIED, 1},		// 0x78
 	{INS_NULLFUNC, 0},		// 0x79
-	{INS_NULLFUNC, 0},		// 0x7A
+	{NOP_IMMEDIATE, 0},		// 0x7A
 	{INS_NULLFUNC, 0},		// 0x7B
-	{INS_NULLFUNC, 0},		// 0x7C
+	{NOP_IMMEDIATE, 0},		// 0x7C
 	{INS_NULLFUNC, 0},		// 0x7D
 	{INS_NULLFUNC, 0},		// 0x7E
 	{INS_NULLFUNC, 0},		// 0x7F
 	////////////// 80 /////////////
-	{INS_NULLFUNC, 1},		// 0x80
+	{NOP_IMMEDIATE, 1},		// 0x80
 	{INS_NULLFUNC, 0},		// 0x81
 	{INS_NULLFUNC, 0},		// 0x82
-	{INS_NULLFUNC, 0},		// 0x83
+	{NOP_IMMEDIATE, 0},		// 0x83
 	{INS_NULLFUNC, 0},		// 0x84
 	{INS_NULLFUNC, 0},		// 0x85
 	{INS_NULLFUNC, 0},		// 0x86
 	{INS_NULLFUNC, 0},		// 0x87
 	{INS_NULLFUNC, 1},		// 0x88
-	{INS_NULLFUNC, 0},		// 0x89
+	{NOP_IMMEDIATE, 0},		// 0x89
 	{TXA_IMPLIED, 1},		// 0x8A
 	{INS_NULLFUNC, 0},		// 0x8B
 	{INS_NULLFUNC, 0},		// 0x8C
@@ -307,7 +311,7 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0xC0
 	{INS_NULLFUNC, 0},		// 0xC1
 	{INS_NULLFUNC, 0},		// 0xC2
-	{INS_NULLFUNC, 0},		// 0xC3
+	{NOP_IMMEDIATE, 0},		// 0xC3
 	{INS_NULLFUNC, 0},		// 0xC4
 	{INS_NULLFUNC, 0},		// 0xC5
 	{INS_NULLFUNC, 0},		// 0xC6
@@ -325,15 +329,15 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0xD1
 	{INS_NULLFUNC, 0},		// 0xD2
 	{INS_NULLFUNC, 0},		// 0xD3
-	{INS_NULLFUNC, 0},		// 0xD4
+	{NOP_IMMEDIATE, 0},		// 0xD4
 	{INS_NULLFUNC, 0},		// 0xD5
 	{INS_NULLFUNC, 0},		// 0xD6
 	{INS_NULLFUNC, 0},		// 0xD7
 	{CLD_IMPLIED, 1},		// 0xD8
 	{INS_NULLFUNC, 0},		// 0xD9
-	{INS_NULLFUNC, 0},		// 0xDA
+	{NOP_IMMEDIATE, 0},		// 0xDA
 	{INS_NULLFUNC, 0},		// 0xDB
-	{INS_NULLFUNC, 0},		// 0xDC
+	{NOP_IMMEDIATE, 0},		// 0xDC
 	{CMP_ABSOLUTE_IX, 1},	// 0xDD
 	{INS_NULLFUNC, 0},		// 0xDE
 	{INS_NULLFUNC, 0},		// 0xDF
@@ -341,7 +345,7 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0xE0
 	{INS_NULLFUNC, 0},		// 0xE1
 	{INS_NULLFUNC, 0},		// 0xE2
-	{INS_NULLFUNC, 0},		// 0xE3
+	{NOP_IMMEDIATE, 0},		// 0xE3
 	{INS_NULLFUNC, 0},		// 0xE4
 	{INS_NULLFUNC, 0},		// 0xE5
 	{INS_NULLFUNC, 0},		// 0xE6
@@ -359,15 +363,15 @@ const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	{INS_NULLFUNC, 0},		// 0xF1
 	{INS_NULLFUNC, 0},		// 0xF2
 	{INS_NULLFUNC, 0},		// 0xF3
-	{INS_NULLFUNC, 0},		// 0xF4
+	{NOP_IMMEDIATE, 0},		// 0xF4
 	{INS_NULLFUNC, 0},		// 0xF5
 	{INS_NULLFUNC, 0},		// 0xF6
 	{INS_NULLFUNC, 0},		// 0xF7
 	{INS_NULLFUNC, 0},		// 0xF8
 	{INS_NULLFUNC, 0},		// 0xF9
-	{INS_NULLFUNC, 0},		// 0xFA
+	{NOP_IMMEDIATE, 0},		// 0xFA
 	{INS_NULLFUNC, 0},		// 0xFB
-	{INS_NULLFUNC, 0},		// 0xFC
+	{NOP_IMMEDIATE, 0},		// 0xFC
 	{INS_NULLFUNC, 0},		// 0xFD
 	{INS_NULLFUNC, 0},		// 0xFE
 	{INS_NULLFUNC, 0},		// 0xFF
