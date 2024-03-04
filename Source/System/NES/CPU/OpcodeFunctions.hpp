@@ -9,4 +9,5 @@ struct Opcode {
 	uint8_t cycles;
 };
 
+// array of all opcode functions and their respective cycles
 extern const std::array<Opcode, 256> g_opcodes;
