@@ -6,6 +6,15 @@ static void updateValue(IOBus *ioBus, uint8_t &field, uint8_t value) {
 	ioBus->mCPU.mFlags.mNegative = ((int8_t)value < 0);
 }
 
+void BRK_IMPLIED(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
+	ioBus->mMemory.write<uint8_t>(ioBus->mCPU.SP--, ioBus->mCPU.PC >> 8);
+	ioBus->mMemory.write<uint8_t>(ioBus->mCPU.SP--, ioBus->mCPU.PC & 0xFF);
+	ioBus->mMemory.write<uint8_t>(ioBus->mCPU.SP--, ioBus->mCPU.P);
+	ioBus->mCPU.mFlags.mBreak = true;
+	ioBus->mCPU.mFlags.mInterruptDisable = true;
+	ioBus->mCPU.PC = ioBus->mMemory.read<uint16_t>(0xFFFE);
+}
+
 void LDA_IMMEDIATE(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
 	updateValue(ioBus, ioBus->mCPU.A, byte1);
 }
@@ -104,7 +113,7 @@ void INS_NULLFUNC(IOBus *ioBus, uint8_t byte1, uint8_t byte2) {
 
 const std::array<Opcode, 256> g_opcodes = std::to_array<Opcode>({
 	////////////// 00 /////////////
-	{INS_NULLFUNC, 0},		// 0x00
+	{BRK_IMPLIED, 7},		// 0x00
 	{INS_NULLFUNC, 0},		// 0x01
 	{INS_NULLFUNC, 0},		// 0x02
 	{INS_NULLFUNC, 0},		// 0x03
