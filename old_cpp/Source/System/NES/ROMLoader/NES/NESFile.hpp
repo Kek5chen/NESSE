@@ -51,4 +51,4 @@ struct NESFile {
 
 	NESFileHeader Header;
 	NESFileData Data;
-};
+}
