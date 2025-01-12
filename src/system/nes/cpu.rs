@@ -1,5 +1,5 @@
 use bitflags::bitflags;
-use crate::system::nes::mnemonics::MNEMONICS;
+use crate::system::nes::mnemonics::{ABSOLUTE, ABSOLUTE_INDEXED_X, ABSOLUTE_INDEXED_Y, ABSOLUTE_INDIRECT, ACCUMULATOR, EMPTY, IMMEDIATE, IMPLIED, MNEMONICS, RELATIVE, ZERO_PAGE, ZERO_PAGE_INDEXED_INDIRECT, ZERO_PAGE_INDEXED_X, ZERO_PAGE_INDEXED_Y, ZERO_PAGE_INDIRECT_INDEXED_Y};
 
 bitflags! {
     pub struct CPUFlagStruct : u8 {
@@ -124,5 +124,20 @@ pub const fn get_mnemonic(opcode: u8) -> &'static str {
 }
 
 pub const fn get_opcode_size(opcode: u8) -> u8 {
-    MNEMONICS[opcode as usize].1
+    match MNEMONICS[opcode as usize].1 {
+        ACCUMULATOR=> 1,
+        IMPLIED => 1,
+        IMMEDIATE => 2,
+        ABSOLUTE => 3,
+        ZERO_PAGE => 2,
+        RELATIVE => 2,
+        ABSOLUTE_INDIRECT=> 3,
+        ABSOLUTE_INDEXED_X => 3,
+        ABSOLUTE_INDEXED_Y => 3,
+        ZERO_PAGE_INDEXED_X => 2,
+        ZERO_PAGE_INDEXED_Y => 2,
+        ZERO_PAGE_INDEXED_INDIRECT => 2,
+        ZERO_PAGE_INDIRECT_INDEXED_Y=> 2,
+        _ => 1,
+    }
 }

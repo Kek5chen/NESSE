@@ -1,17 +1,17 @@
-const ACCUMULATOR: u8 = 0;
-const IMPLIED: u8 = 1;
-const IMMEDIATE: u8 = 2;
-const ABSOLUTE: u8 = 3;
-const ZERO_PAGE: u8 = 4;
-const RELATIVE: u8 = 5;
-const ABSOLUTE_INDIRECT: u8 = 6;
-const ABSOLUTE_INDEXED_X: u8 = 7;
-const ABSOLUTE_INDEXED_Y: u8 = 8;
-const ZERO_PAGE_INDEXED_X: u8 = 9;
-const ZERO_PAGE_INDEXED_Y: u8 = 10;
-const ZERO_PAGE_INDEXED_INDIRECT: u8 = 11;
-const ZERO_PAGE_INDIRECT_INDEXED_Y: u8 = 12;
-const EMPTY: u8 = 255;
+pub const ACCUMULATOR: u8 = 0;
+pub const IMPLIED: u8 = 1;
+pub const IMMEDIATE: u8 = 2;
+pub const ABSOLUTE: u8 = 3;
+pub const ZERO_PAGE: u8 = 4;
+pub const RELATIVE: u8 = 5;
+pub const ABSOLUTE_INDIRECT: u8 = 6;
+pub const ABSOLUTE_INDEXED_X: u8 = 7;
+pub const ABSOLUTE_INDEXED_Y: u8 = 8;
+pub const ZERO_PAGE_INDEXED_X: u8 = 9;
+pub const ZERO_PAGE_INDEXED_Y: u8 = 10;
+pub const ZERO_PAGE_INDEXED_INDIRECT: u8 = 11;
+pub const ZERO_PAGE_INDIRECT_INDEXED_Y: u8 = 12;
+pub const EMPTY: u8 = 255;
 
 pub const MNEMONICS: [(&str, u8); 256] = [
     ("BRK", IMPLIED),
@@ -30,6 +30,7 @@ pub const MNEMONICS: [(&str, u8); 256] = [
     ("ORA", ABSOLUTE ),
     ("ASL", ABSOLUTE ),
     ("",    EMPTY ),
+    // 0x10
     ("BPL", RELATIVE ),
     ("ORA", ZERO_PAGE_INDIRECT_INDEXED_Y ),
     ("",    EMPTY ),

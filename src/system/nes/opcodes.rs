@@ -157,6 +157,275 @@ pub fn nop_immediate(_nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<(
     Ok(())
 }
 
+pub fn ora_indirect_y(nes: &mut NES, byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    let addr_base = nes.bus.memory.read::<u8>(byte1 as u16)? as u16;
+    let addr = addr_base.wrapping_add(nes.bus.cpu.y as u16);
+    let value = nes.bus.memory.read::<u8>(addr)?;
+
+    let result = nes.bus.cpu.a | value;
+    nes.bus.cpu.a = result;
+
+    nes.bus.cpu.set_zero(result == 0);
+    nes.bus.cpu.set_negative((result as i8) < 0);
+    Ok(())
+}
+
+/// ORA (Indirect,X) - opcode 0x01
+///   - Reads from `(byte1 + X) & 0xFF` in zero page to get a 16-bit address,
+///     then ORs that value with A.
+pub fn ora_indirect_x(nes: &mut NES, byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    // Zero-page address = (operand + X) & 0xFF
+    let zp_addr = (byte1.wrapping_add(nes.bus.cpu.x)) as u16;
+
+    // Low and high bytes of the target address
+    let low: u16 = nes.bus.memory.read(zp_addr)?;
+    let high: u16 = nes.bus.memory.read((zp_addr.wrapping_add(1)) & 0xFF)?;
+
+    let final_addr = ((high) << 8) | (low);
+    let value: u8 = nes.bus.memory.read(final_addr)?;
+
+    let result = nes.bus.cpu.a | value;
+    nes.bus.cpu.a = result;
+
+    nes.bus.cpu.set_zero(result == 0);
+    nes.bus.cpu.set_negative((result as i8) < 0);
+    Ok(())
+}
+
+/// ORA Zero Page - opcode 0x05
+pub fn ora_zero_page(nes: &mut NES, byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    let addr = byte1 as u16;
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let result = nes.bus.cpu.a | value;
+    nes.bus.cpu.a = result;
+
+    nes.bus.cpu.set_zero(result == 0);
+    nes.bus.cpu.set_negative((result as i8) < 0);
+    Ok(())
+}
+
+/// ORA Absolute - opcode 0x0D
+pub fn ora_absolute(nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
+    let addr = ((byte2 as u16) << 8) | (byte1 as u16);
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let result = nes.bus.cpu.a | value;
+    nes.bus.cpu.a = result;
+
+    nes.bus.cpu.set_zero(result == 0);
+    nes.bus.cpu.set_negative((result as i8) < 0);
+    Ok(())
+}
+
+/// ORA Zero Page,X - opcode 0x15
+pub fn ora_zp_x(nes: &mut NES, byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    let addr = (byte1.wrapping_add(nes.bus.cpu.x)) as u16;
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let result = nes.bus.cpu.a | value;
+    nes.bus.cpu.a = result;
+
+    nes.bus.cpu.set_zero(result == 0);
+    nes.bus.cpu.set_negative((result as i8) < 0);
+    Ok(())
+}
+
+/// ORA Absolute,Y - opcode 0x19
+pub fn ora_absolute_y(nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
+    let base_addr = ((byte2 as u16) << 8) | (byte1 as u16);
+    let addr = base_addr.wrapping_add(nes.bus.cpu.y as u16);
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let result = nes.bus.cpu.a | value;
+    nes.bus.cpu.a = result;
+
+    nes.bus.cpu.set_zero(result == 0);
+    nes.bus.cpu.set_negative((result as i8) < 0);
+    Ok(())
+}
+
+/// ORA Absolute,X - opcode 0x1D
+pub fn ora_absolute_x(nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
+    let base_addr = ((byte2 as u16) << 8) | (byte1 as u16);
+    let addr = base_addr.wrapping_add(nes.bus.cpu.x as u16);
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let result = nes.bus.cpu.a | value;
+    nes.bus.cpu.a = result;
+
+    nes.bus.cpu.set_zero(result == 0);
+    nes.bus.cpu.set_negative((result as i8) < 0);
+    Ok(())
+}
+
+// ----------------------------------------------------------
+
+/// ASL Zero Page - opcode 0x06
+pub fn asl_zero_page(nes: &mut NES, byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    let addr = byte1 as u16;
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let carry = (value & 0x80) != 0;
+
+    let shifted = value << 1;
+    nes.bus.memory.write(addr, shifted)?;
+
+    nes.bus.cpu.set_carry(carry);
+    nes.bus.cpu.set_zero(shifted == 0);
+    nes.bus.cpu.set_negative((shifted as i8) < 0);
+    Ok(())
+}
+
+/// ASL Accumulator - opcode 0x0A
+pub fn asl_accumulator(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    let carry = (nes.bus.cpu.a & 0x80) != 0;
+    nes.bus.cpu.a <<= 1;
+
+    nes.bus.cpu.set_carry(carry);
+    nes.bus.cpu.set_zero(nes.bus.cpu.a == 0);
+    nes.bus.cpu.set_negative((nes.bus.cpu.a as i8) < 0);
+    Ok(())
+}
+
+/// ASL Absolute - opcode 0x0E
+pub fn asl_absolute(nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
+    let addr = ((byte2 as u16) << 8) | (byte1 as u16);
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let carry = (value & 0x80) != 0;
+
+    let shifted = value << 1;
+    nes.bus.memory.write(addr, shifted)?;
+
+    nes.bus.cpu.set_carry(carry);
+    nes.bus.cpu.set_zero(shifted == 0);
+    nes.bus.cpu.set_negative((shifted as i8) < 0);
+    Ok(())
+}
+
+/// ASL Absolute,X - opcode 0x1E
+pub fn asl_absolute_x(nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
+    let base = ((byte2 as u16) << 8) | (byte1 as u16);
+    let addr = base.wrapping_add(nes.bus.cpu.x as u16);
+
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let carry = (value & 0x80) != 0;
+
+    let shifted = value << 1;
+    nes.bus.memory.write(addr, shifted)?;
+
+    nes.bus.cpu.set_carry(carry);
+    nes.bus.cpu.set_zero(shifted == 0);
+    nes.bus.cpu.set_negative((shifted as i8) < 0);
+    Ok(())
+}
+
+// ----------------------------------------------------------
+
+/// PHP (Push Processor Status) - opcode 0x08
+pub fn php_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    let p = nes.bus.cpu.p; // Processor status
+    nes.bus.memory.write(nes.bus.cpu.sp as u16, p)?;
+    nes.bus.cpu.sp = nes.bus.cpu.sp.wrapping_sub(1);
+    Ok(())
+}
+
+/// PLP (Pull Processor Status) - opcode 0x28
+pub fn plp_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    nes.bus.cpu.sp = nes.bus.cpu.sp.wrapping_add(1);
+    let new_p = nes.bus.memory.read(nes.bus.cpu.sp as u16)?;
+    nes.bus.cpu.p = new_p;
+    Ok(())
+}
+
+/// PHA (Push A) - opcode 0x48
+pub fn pha_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    let a = nes.bus.cpu.a;
+    nes.bus.memory.write(nes.bus.cpu.sp as u16, a)?;
+    nes.bus.cpu.sp = nes.bus.cpu.sp.wrapping_sub(1);
+    Ok(())
+}
+
+/// PLA (Pull A) - opcode 0x68
+pub fn pla_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    nes.bus.cpu.sp = nes.bus.cpu.sp.wrapping_add(1);
+    let value = nes.bus.memory.read(nes.bus.cpu.sp as u16)?;
+    update_register!(nes, a, value);
+    Ok(())
+}
+
+// ----------------------------------------------------------
+
+/// CLC (Clear Carry) - opcode 0x18
+pub fn clc_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    nes.bus.cpu.set_carry(false);
+    Ok(())
+}
+
+/// SEC (Set Carry) - opcode 0x38
+pub fn sec_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    nes.bus.cpu.set_carry(true);
+    Ok(())
+}
+
+// ----------------------------------------------------------
+
+/// BIT Zero Page - opcode 0x24
+pub fn bit_zero_page(nes: &mut NES, byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    let addr = byte1 as u16;
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let result = nes.bus.cpu.a & value;
+
+    nes.bus.cpu.set_zero(result == 0);
+    // For BIT, bits 7 and 6 of `value` get copied into N and V flags.
+    nes.bus.cpu.set_negative((value & 0x80) != 0);
+    nes.bus.cpu.set_overflow((value & 0x40) != 0);
+    Ok(())
+}
+
+/// BIT Absolute - opcode 0x2C
+pub fn bit_absolute(nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
+    let addr = ((byte2 as u16) << 8) | (byte1 as u16);
+    let value: u8 = nes.bus.memory.read(addr)?;
+    let result = nes.bus.cpu.a & value;
+
+    nes.bus.cpu.set_zero(result == 0);
+    nes.bus.cpu.set_negative((value & 0x80) != 0);
+    nes.bus.cpu.set_overflow((value & 0x40) != 0);
+    Ok(())
+}
+
+// ----------------------------------------------------------
+
+/// RTI - opcode 0x40
+/// Similar to PLP, but also pulls PC from stack.
+pub fn rti_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    // Pull status
+    nes.bus.cpu.sp = nes.bus.cpu.sp.wrapping_add(1);
+    let new_p = nes.bus.memory.read(nes.bus.cpu.sp as u16)?;
+    nes.bus.cpu.p = new_p;
+
+    // Pull low PC
+    nes.bus.cpu.sp = nes.bus.cpu.sp.wrapping_add(1);
+    let pcl: u16 = nes.bus.memory.read::<u8>(nes.bus.cpu.sp as u16)? as u16;
+
+    // Pull high PC
+    nes.bus.cpu.sp = nes.bus.cpu.sp.wrapping_add(1);
+    let pch: u16 = nes.bus.memory.read::<u8>(nes.bus.cpu.sp as u16)? as u16;
+
+    nes.bus.cpu.pc = (pch << 8) | pcl;
+    Ok(())
+}
+
+/// RTS - opcode 0x60
+/// Pull PC from stack, then PC++
+pub fn rts_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
+    // Pull low PC
+    nes.bus.cpu.sp = nes.bus.cpu.sp.wrapping_add(1);
+    let pcl = nes.bus.memory.read::<u8>(nes.bus.cpu.sp as u16)? as u16;
+
+    // Pull high PC
+    nes.bus.cpu.sp = nes.bus.cpu.sp.wrapping_add(1);
+    let pch = nes.bus.memory.read::<u8>(nes.bus.cpu.sp as u16)? as u16;
+
+    nes.bus.cpu.pc = ((pch << 8) | pcl).wrapping_add(1);
+    Ok(())
+}
+
 pub fn ins_nullfunc(_nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
     println!(
         "Game called NULLFUNC with 0x{:02X} and 0x{:02X}",
@@ -166,35 +435,36 @@ pub fn ins_nullfunc(_nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> 
     Ok(())
 }
 
+// function and cycle amount
 pub const OPCODES: [(fn(&mut NES, u8, u8) -> anyhow::Result<()>, u8); 256] = [
 ///////////// 00 /////////////
     (brk_implied, 7),		// 0x00
-    (ins_nullfunc, 0),		// 0x01;
+    (ora_indirect_x, 6),	// 0x01;
     (ins_nullfunc, 0),		// 0x02;
     (ins_nullfunc, 0),		// 0x03;
     (nop_immediate, 3),		// 0x04;
-    (ins_nullfunc, 0),		// 0x05;
-    (ins_nullfunc, 0),		// 0x06;
+    (ora_zero_page, 3),		// 0x05;
+    (asl_zero_page, 5),		// 0x06;
     (ins_nullfunc, 0),		// 0x07
-    (ins_nullfunc, 0),		// 0x08
+    (php_implied, 3),		// 0x08
     (ins_nullfunc, 0),		// 0x09
-    (ins_nullfunc, 0),		// 0x0A
+    (asl_accumulator, 2),   // 0x0A
     (ins_nullfunc, 0),		// 0x0B
     (nop_immediate, 4),		// 0x0C
-    (ins_nullfunc, 0),		// 0x0D
-    (ins_nullfunc, 0),		// 0x0E
+    (ora_absolute, 2),		// 0x0D
+    (asl_absolute, 4),	    // 0x0E
     (ins_nullfunc, 0),		// 0x0F
 ////////////// 10 /////////////
     (bpl_relative, 1),		// 0x10
-    (ins_nullfunc, 0),		// 0x11
+    (ora_indirect_y, 5),	// 0x11
     (ins_nullfunc, 0),		// 0x12
     (ins_nullfunc, 0),		// 0x13
     (nop_immediate, 4),		// 0x14
-    (ins_nullfunc, 0),		// 0x15
+    (ora_zp_x, 4),		    // 0x15
     (ins_nullfunc, 0),		// 0x16
     (ins_nullfunc, 0),		// 0x17
-    (ins_nullfunc, 0),		// 0x18
-    (ins_nullfunc, 0),		// 0x19
+    (clc_implied, 2),		// 0x18
+    (ora_absolute_y, 4),	// 0x19
     (nop_immediate, 2),		// 0x1A
     (ins_nullfunc, 0),		// 0x1B
     (nop_immediate, 4),		// 0x1C
@@ -206,15 +476,15 @@ pub const OPCODES: [(fn(&mut NES, u8, u8) -> anyhow::Result<()>, u8); 256] = [
     (ins_nullfunc, 0),		// 0x21
     (ins_nullfunc, 0),		// 0x22
     (ins_nullfunc, 0),		// 0x23
-    (ins_nullfunc, 0),		// 0x24
+    (bit_zero_page, 3),		// 0x24
     (ins_nullfunc, 0),		// 0x25
     (ins_nullfunc, 0),		// 0x26
     (ins_nullfunc, 0),		// 0x27
-    (ins_nullfunc, 0),		// 0x28
+    (plp_implied, 4),		// 0x28
     (ins_nullfunc, 0),		// 0x29
     (ins_nullfunc, 0),		// 0x2A
     (ins_nullfunc, 0),		// 0x2B
-    (ins_nullfunc, 0),		// 0x2C
+    (bit_absolute, 4),		// 0x2C
     (ins_nullfunc, 0),		// 0x2D
     (ins_nullfunc, 0),		// 0x2E
     (ins_nullfunc, 0),		// 0x2F
@@ -227,7 +497,7 @@ pub const OPCODES: [(fn(&mut NES, u8, u8) -> anyhow::Result<()>, u8); 256] = [
     (ins_nullfunc, 0),		// 0x35
     (ins_nullfunc, 0),		// 0x36
     (ins_nullfunc, 0),		// 0x37
-    (ins_nullfunc, 0),		// 0x38
+    (sec_implied, 2),		// 0x38
     (ins_nullfunc, 0),		// 0x39
     (nop_immediate, 2),		// 0x3A
     (ins_nullfunc, 0),		// 0x3B
@@ -236,7 +506,7 @@ pub const OPCODES: [(fn(&mut NES, u8, u8) -> anyhow::Result<()>, u8); 256] = [
     (ins_nullfunc, 0),		// 0x3E
     (ins_nullfunc, 0),		// 0x3F
 ////////////// 40 /////////////
-    (ins_nullfunc, 1),		// 0x40
+    (rti_implied, 6),		// 0x40
     (ins_nullfunc, 0),		// 0x41
     (ins_nullfunc, 0),		// 0x42
     (ins_nullfunc, 0),		// 0x43
@@ -244,7 +514,7 @@ pub const OPCODES: [(fn(&mut NES, u8, u8) -> anyhow::Result<()>, u8); 256] = [
     (ins_nullfunc, 0),		// 0x45
     (ins_nullfunc, 0),		// 0x46
     (ins_nullfunc, 0),		// 0x47
-    (ins_nullfunc, 0),		// 0x48
+    (pha_implied, 3),		// 0x48
     (ins_nullfunc, 0),		// 0x49
     (ins_nullfunc, 0),		// 0x4A
     (ins_nullfunc, 0),		// 0x4B
@@ -270,7 +540,7 @@ pub const OPCODES: [(fn(&mut NES, u8, u8) -> anyhow::Result<()>, u8); 256] = [
     (ins_nullfunc, 0),		// 0x5E
     (ins_nullfunc, 0),		// 0x5F
 ////////////// 60 /////////////
-    (ins_nullfunc, 1),		// 0x60
+    (rts_implied, 6),		// 0x60
     (ins_nullfunc, 0),		// 0x61
     (ins_nullfunc, 0),		// 0x62
     (ins_nullfunc, 0),		// 0x63
@@ -278,7 +548,7 @@ pub const OPCODES: [(fn(&mut NES, u8, u8) -> anyhow::Result<()>, u8); 256] = [
     (ins_nullfunc, 0),		// 0x65
     (ins_nullfunc, 0),		// 0x66
     (ins_nullfunc, 0),		// 0x67
-    (ins_nullfunc, 0),		// 0x68
+    (pla_implied, 4),		// 0x68
     (ins_nullfunc, 0),		// 0x69
     (ins_nullfunc, 0),		// 0x6A
     (ins_nullfunc, 0),		// 0x6B

@@ -82,6 +82,8 @@ impl NES {
         let byte1 = *cur_instruction.get(1).unwrap_or(&0);
         let byte2 = *cur_instruction.get(2).unwrap_or(&0);
 
+        println!("Executing 0x{:02X} 0x{:02X} 0x{:02X}", opcode, byte1, byte2);
+
         OPCODES[opcode as usize].0(self, byte1, byte2)?;
 
         self.bus.cpu.pc += 1 + cur_instruction.len() as u16;

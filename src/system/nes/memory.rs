@@ -70,7 +70,7 @@ impl Memory {
     pub fn read<T: FromBytes + Copy + bytemuck::Pod>(&self, addr: u16) -> anyhow::Result<T> {
         let size = size_of::<T>();
         if addr as usize + size > 0xFFFF {
-            return Err(format_err!("Out of Bounds Read to 0x{addr:x?}"));
+            return Err(format_err!("Out of Bounds Read at 0x{addr:x?}"));
         }
 
         let bytes;
