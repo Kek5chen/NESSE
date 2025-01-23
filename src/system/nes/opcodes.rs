@@ -427,6 +427,15 @@ pub fn rts_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> 
     Ok(())
 }
 
+// 0xF0
+pub fn beq_relative(nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
+    if nes.bus.cpu.flags.contains(CPUFlagStruct::Zero) {
+        nes.bus.cpu.pc = nes.bus.cpu.pc + byte1 as u16;
+    }
+
+    Ok(())
+}
+
 pub fn ins_nullfunc(_nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
     panic!(
         "INVALID! Game called NULLFUNC with 0x{:02X} and 0x{:02X}",
@@ -692,7 +701,7 @@ pub const OPCODES: [(fn(&mut NES, u8, u8) -> anyhow::Result<()>, u8); 256] = [
     (ins_nullfunc, 0),		// 0xEE
     (ins_nullfunc, 0),		// 0xEF
 ////////////// F0 /////////////
-    (ins_nullfunc, 0),		// 0xF0
+    (beq_relative, 0),		// 0xF0
     (ins_nullfunc, 0),		// 0xF1
     (ins_nullfunc, 0),		// 0xF2
     (ins_nullfunc, 0),		// 0xF3
