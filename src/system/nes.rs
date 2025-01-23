@@ -86,7 +86,7 @@ impl NES {
 
         OPCODES[opcode as usize].0(self, byte1, byte2)?;
 
-        self.bus.cpu.pc += 1 + cur_instruction.len() as u16;
+        self.bus.cpu.pc += cur_instruction.len() as u16;
 
         Ok(0)
     }
