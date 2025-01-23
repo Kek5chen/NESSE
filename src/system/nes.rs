@@ -1,6 +1,7 @@
 use std::path::Path;
 use std::fmt::Debug;
-use crate::system::nes::cpu::get_opcode_size;
+use log::{debug, info, trace};
+use crate::system::nes::cpu::{get_mnemonic, get_opcode_size};
 use crate::system::nes::iobus::IOBus;
 use crate::system::nes::loader::NESLoader;
 use crate::system::nes::opcodes::OPCODES;
@@ -33,7 +34,7 @@ impl NES {
     }
 
     pub fn insert_rom<P: AsRef<Path> + Debug>(&mut self, path: &P) -> anyhow::Result<()> {
-        println!("Loading {path:?}...");
+        info!("Loading {path:?}...");
 
         NESLoader::load_rom(path, self)?;
 
@@ -47,7 +48,7 @@ impl NES {
     }
 
     pub fn run(&mut self) -> anyhow::Result<()> {
-        println!("Starting Nes...");
+        info!("Starting Nes...");
         self.reset()?;
         for _ in 0..100 {
             self.execute()?;
@@ -59,7 +60,7 @@ impl NES {
 
     pub fn get_instruction_at(&self, addr: u16) -> anyhow::Result<Vec<u8>> {
         let mut instruction = vec![];
-        println!("Getting instruction at 0x{:04X}", addr);
+        trace!("Getting instruction at 0x{:04X}", addr);
         let opcode = self.bus.memory.read(addr)?;
         instruction.push(opcode);
 
@@ -82,7 +83,8 @@ impl NES {
         let byte1 = *cur_instruction.get(1).unwrap_or(&0);
         let byte2 = *cur_instruction.get(2).unwrap_or(&0);
 
-        println!("Executing 0x{:02X} 0x{:02X} 0x{:02X}", opcode, byte1, byte2);
+        let opcode_name = get_mnemonic(opcode);
+        trace!("Executing (0x{:02X}): {} 0x{:02X} 0x{:02X}", opcode, opcode_name, byte1, byte2);
 
         OPCODES[opcode as usize].0(self, byte1, byte2)?;
 

@@ -9,6 +9,7 @@ macro_rules! update_register {
     }
 }
 
+// 0x00
 pub fn brk_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> {
     let pc_high = (nes.bus.cpu.pc >> 8) as u8;
     let pc_low  = (nes.bus.cpu.pc & 0xFF) as u8;
@@ -427,12 +428,10 @@ pub fn rts_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> 
 }
 
 pub fn ins_nullfunc(_nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
-    println!(
-        "Game called NULLFUNC with 0x{:02X} and 0x{:02X}",
+    panic!(
+        "INVALID! Game called NULLFUNC with 0x{:02X} and 0x{:02X}",
         byte1, byte2
     );
-
-    Ok(())
 }
 
 // function and cycle amount
