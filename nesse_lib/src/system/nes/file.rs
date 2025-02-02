@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
+use log::debug;
 use static_assertions::const_assert_eq;
 
 #[repr(C)]
@@ -18,7 +19,7 @@ pub struct NESFileHeader {
 }
 
 // Ensures the struct is 16 bytes in total.
-const_assert_eq!(std::mem::size_of::<NESFileHeader>(), 16);
+const_assert_eq!(size_of::<NESFileHeader>(), 16);
 
 #[derive(Debug)]
 pub struct NESFileData {
@@ -52,9 +53,13 @@ impl NESFile {
         let mut prg_rom = vec![0u8; prg_len];
         file.read_exact(&mut prg_rom)?;
 
+        debug!("PRG ROM size: {}", prg_rom.len());
+
         // Read CHR ROM
         let mut chr_rom = vec![0u8; chr_len];
         file.read_exact(&mut chr_rom)?;
+
+        debug!("CHR ROM size: {}", prg_rom.len());
 
         // TODO: Trainers
 

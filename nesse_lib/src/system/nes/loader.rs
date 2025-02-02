@@ -11,8 +11,7 @@ impl NESLoader {
             return Err(anyhow::anyhow!("Invalid NES ROM"));
         }
 
-        nes.bus.memory.write_slice(0x8000, &rom.data.prg_rom)?;
-        nes.bus.memory.write_slice(0xBFFF, &rom.data.prg_rom)?;
+        nes.bus.memory.write_slice(0xC000, &rom.data.prg_rom)?;
         nes.bus.ppu.write_slice(0, &rom.data.chr_rom)?;
 
         Ok(())

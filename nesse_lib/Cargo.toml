@@ -1,0 +1,12 @@
+[package]
+name = "nesse_lib"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bitflags = "2.7.0"
+anyhow = "1.0.95"
+num-traits = "0.2.19"
+bytemuck = "1.21.0"
+static_assertions = "1.1.0"
+log = "0.4.25"

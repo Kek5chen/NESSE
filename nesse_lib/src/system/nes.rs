@@ -1,6 +1,8 @@
 use std::path::Path;
 use std::fmt::Debug;
-use log::{debug, info, trace};
+use std::thread::sleep;
+use std::time::Duration;
+use log::{info, trace};
 use crate::system::nes::cpu::{get_mnemonic, get_opcode_size};
 use crate::system::nes::iobus::IOBus;
 use crate::system::nes::loader::NESLoader;
@@ -15,6 +17,7 @@ pub mod opcodes;
 pub mod mnemonics;
 pub mod loader;
 mod file;
+mod debugger;
 
 const CPU_TICK_COUNT: u32 = 1_789_773;
 const CYCLES_PER_FRAME_NTSC: u16 = (CPU_TICK_COUNT / 60) as u16;
@@ -50,7 +53,7 @@ impl NES {
     pub fn run(&mut self) -> anyhow::Result<()> {
         info!("Starting Nes...");
         self.reset()?;
-        for _ in 0..100 {
+        loop {
             self.execute()?;
         }
         // TODO: self.next_frame(); - run next_frame once it's safe
@@ -64,7 +67,7 @@ impl NES {
         let opcode = self.bus.memory.read(addr)?;
         instruction.push(opcode);
 
-        let instruction_size = get_opcode_size(opcode);
+        let instruction_size = get_opcode_size(opcode) - 1;
         for i in 1..=instruction_size {
             instruction.push(self.bus.memory.read(addr + i as u16)?);
         }
@@ -84,7 +87,13 @@ impl NES {
         let byte2 = *cur_instruction.get(2).unwrap_or(&0);
 
         let opcode_name = get_mnemonic(opcode);
-        trace!("Executing (0x{:02X}): {} 0x{:02X} 0x{:02X}", opcode, opcode_name, byte1, byte2);
+
+        match cur_instruction.len() {
+            1 => trace!("Executing (0x{:02X}): {}", opcode, opcode_name),
+            2 => trace!("Executing (0x{:02X}): {} 0x{:02X}", opcode, opcode_name, byte1),
+            3 => trace!("Executing (0x{:02X}): {} 0x{:02X} 0x{:02X}", opcode, opcode_name, byte1, byte2),
+            _ => {}
+        };
 
         OPCODES[opcode as usize].0(self, byte1, byte2)?;
 

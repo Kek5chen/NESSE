@@ -428,7 +428,7 @@ pub fn rts_implied(nes: &mut NES, _byte1: u8, _byte2: u8) -> anyhow::Result<()> 
 }
 
 // 0xF0
-pub fn beq_relative(nes: &mut NES, byte1: u8, byte2: u8) -> anyhow::Result<()> {
+pub fn beq_relative(nes: &mut NES, byte1: u8, _byte2: u8) -> anyhow::Result<()> {
     if nes.bus.cpu.flags.contains(CPUFlagStruct::Zero) {
         nes.bus.cpu.pc = nes.bus.cpu.pc + byte1 as u16;
     }

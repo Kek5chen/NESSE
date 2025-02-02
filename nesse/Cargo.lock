@@ -75,9 +75,9 @@ checksum = "ace50bade8e6234aa140d9a2f552bbee1db4d353f69b8217bc503490fc1a9f26"
 
 [[package]]
 name = "bitflags"
-version = "2.8.0"
+version = "2.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f68f53c83ab957f72c32642f3868eec03eb974d1fb82e453128456482613d36"
+checksum = "1be3f42a67d6d345ecd59f675f3f012d6974981560836e938c22b424b85ce1be"
 
 [[package]]
 name = "bytemuck"
@@ -142,17 +142,10 @@ checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
 name = "nesse"
 version = "0.1.0"
 dependencies = [
- "env_logger",
- "nesse_lib",
-]
-
-[[package]]
-name = "nesse_lib"
-version = "0.1.0"
-dependencies = [
  "anyhow",
  "bitflags",
  "bytemuck",
+ "env_logger",
  "log",
  "num-traits",
  "static_assertions",
